@@ -6,6 +6,7 @@ import {CATEGORIES} from "../assets/assets-overview-constants";
 import PublicTemplates from "./PublicTemplates/PublicTemplates";
 import MobileHeader from "../../components/MobileHeader/MobileHeader";
 import {MobileOnly} from "../../components/Responsive";
+import VolumeChart from "./VolumeChart/VolumeChart";
 import styles from './MarketingPage.module.scss'
 
 /*
@@ -34,6 +35,8 @@ const MarketingPage = ({history}) => {
         classes={styles}
       />
     </MobileOnly>
+
+    <VolumeChart/>
 
     <div className={styles.inner}>
 

@@ -165,4 +165,18 @@ export const ALL_ERC20_PROJECTS_QUERY = gql`
   }
 `
 
+
+export const ALL_PROJECTS_AGGREGATED_QUERY = gql(`
+  query allProjects($metric:String, $from: DateTime, $to: DateTime) {
+    allProjects(page: 1, pageSize: 100) {
+      aggregatedTimeseriesData(
+        from: $from,
+        to: $to,
+        metric:$metric,
+        aggregation: LAST)
+      slug
+    }
+  }
+`)
+
 export default allProjectsGQL
