@@ -14,7 +14,7 @@ const ChartTooltip = ({
   hideItem,
   withLabel = true,
   events,
-  metrics
+  showName = true
 }) => {
   const payload = hideItem
     ? initialPayload.filter(({ dataKey }) => !hideItem(dataKey))
@@ -50,9 +50,9 @@ const ChartTooltip = ({
                       payload
                     })}
                   </span>
-                  <span className={styles.name}>
+                  {showName && <span className={styles.name}>
                     {foundedSettings.label || name || dataKey}
-                  </span>
+                  </span>}
                 </div>
               )
             }

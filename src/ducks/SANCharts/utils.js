@@ -236,7 +236,8 @@ export const generateMetricsMarkup = (
       gradientUrl,
       opacity = 1,
       formatter,
-      strokeWidth = 1.5
+      strokeWidth = 1.5,
+      yAxisParams
     } = metric
 
     const El = RechartComponent[node]
@@ -268,6 +269,7 @@ export const generateMetricsMarkup = (
         hide={isHidden}
         tickFormatter={yAxisTickFormatter}
         scale={scale}
+        {...yAxisParams}
       />,
       <El
         key={`line-${dataKey}`}

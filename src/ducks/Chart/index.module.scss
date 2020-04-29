@@ -1,5 +1,16 @@
+@import '~@santiment-network/ui/mixins';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .wrapper {
   position: relative;
+  height: 580px;
+  padding: 0 16px;
+  margin-bottom: 48px;
 
   * {
     max-width: 100%;
@@ -9,4 +20,16 @@
 .brush {
   border: 1px solid var(--porcelain);
   border-radius: 4px;
+}
+
+.header {
+  display: flex;
+  padding: 21px 6px;
+}
+
+.title {
+  color: var(--rhino);
+  margin-left: 24px;
+
+  @include text('body-2', 'm');
 }
