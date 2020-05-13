@@ -1,6 +1,5 @@
 import 'rxjs'
 import { combineEpics } from 'redux-observable'
-import handleOffline from './handleOffline'
 import handleLauched from './handleLaunch'
 import handleLogout from './handleLogout'
 import handleEmailLogin, {
@@ -52,11 +51,7 @@ import handleBetaModeToggle, {
   sendBetaModeIfDiff,
   saveBetaModeAfterLaunch
 } from './handleBetaModeToggle'
-import {
-  fetchHypedTrends,
-  selectHypedTrend
-} from '../components/Trends/fetchHypedTrends'
-import { fetchSocialVolumeEpic } from '../components/SocialVolumeWidget/socialVolumeEpic'
+import { fetchHypedTrends } from '../components/Trends/fetchHypedTrends'
 import fetchAllTickersSlugs from '../components/Trends/fetchAllTickersSlugs'
 import {
   connectTelegramEpic,
@@ -78,7 +73,6 @@ import { trialSubscriptionEpic } from './trialSubscriptionEpic'
 import handleWideChartToggle from './handleWideChartToggle'
 
 export default combineEpics(
-  handleOffline,
   handleLauched,
   handleLogout,
   logoutEpic,
@@ -110,10 +104,7 @@ export default combineEpics(
   fetchTimeseriesEpic,
   // trends
   fetchHypedTrends,
-  selectHypedTrend,
   fetchAllTickersSlugs,
-  // SocialVolume
-  fetchSocialVolumeEpic,
   // Settings
   removeConnectedWallet,
   connectNewWallet,

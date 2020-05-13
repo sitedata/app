@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import cx from 'classnames'
 import Icon from '@santiment-network/ui/Icon'
-import Tooltip from '@santiment-network/ui/Tooltip'
+import DarkTooltip from '../../../components/Tooltip/DarkTooltip'
 import FormDialogNewTemplate from './Dialog/NewTemplate'
 import LoginDialog from '../../../components/LoginDialog'
+import Tooltip from '@santiment-network/ui/Tooltip'
+import TemplateInfo from './TemplateDetailsDialog/TemplateInfo'
+import TemplateTitle from './TemplateDetailsDialog/TemplateTitle'
 import styles from './index.module.scss'
 
 const TooltipWrapper = ({ selectedTemplate, children }) => {
@@ -12,16 +15,14 @@ const TooltipWrapper = ({ selectedTemplate, children }) => {
   }
 
   return (
-    <Tooltip
+    <DarkTooltip
       trigger={children}
       position='bottom'
       align='start'
-      withArrow
-      arrowClassName={styles.arrow}
       className={styles.tooltip}
     >
-      Click to save '{selectedTemplate.title}'
-    </Tooltip>
+      Click to save '<TemplateTitle title={selectedTemplate.title} />'
+    </DarkTooltip>
   )
 }
 
@@ -33,18 +34,43 @@ const Trigger = ({
   isLoggedIn
 }) => {
   return (
-    <TooltipWrapper selectedTemplate={selectedTemplate}>
-      <div
-        onClick={selectedTemplate && isLoggedIn ? saveTemplate : openDialog}
-        className={cx(
-          styles.btn__left,
-          !hasTemplates && styles.btn__left_large
-        )}
-      >
-        <Icon type='cloud-small' className={styles.cloud} />
-        {selectedTemplate ? selectedTemplate.title : 'Save as'}
-      </div>
-    </TooltipWrapper>
+    <div
+      onClick={
+        selectedTemplate && isLoggedIn
+          ? saveTemplate
+          : () => {
+            openDialog()
+          }
+      }
+      className={cx(styles.btn__left, !hasTemplates && styles.btn__left_large)}
+    >
+      {selectedTemplate && (
+        <Tooltip
+          position='top'
+          align='start'
+          offsetY={13}
+          closeTimeout={500}
+          trigger={
+            <div className={styles.detailsIcon}>
+              <Icon type='info-round' />
+            </div>
+          }
+          className={styles.tooltip}
+        >
+          <TemplateInfo template={selectedTemplate} classes={styles} />
+        </Tooltip>
+      )}
+
+      <TooltipWrapper selectedTemplate={selectedTemplate}>
+        <div>
+          {selectedTemplate ? (
+            <TemplateTitle title={selectedTemplate.title} />
+          ) : (
+            'Save as'
+          )}
+        </div>
+      </TooltipWrapper>
+    </div>
   )
 }
 
@@ -80,7 +106,7 @@ export default ({
     <button className={styles.btn} ref={forwardedRef}>
       <Dialog
         {...props}
-        title='New Template'
+        title='New Chart Layout'
         open={isDialogOpened}
         onClose={closeDialog}
         onNew={onNew}
@@ -94,14 +120,12 @@ export default ({
           />
         }
       />
-      {hasTemplates && (
-        <div className={styles.dropdown} onClick={openMenu}>
-          <Icon
-            type='arrow-down'
-            className={cx(styles.icon, isMenuOpened && styles.active)}
-          />
-        </div>
-      )}
+      <div className={styles.dropdown} onClick={openMenu}>
+        <Icon
+          type='arrow-down'
+          className={cx(styles.icon, isMenuOpened && styles.active)}
+        />
+      </div>
     </button>
   )
 }

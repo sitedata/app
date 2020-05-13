@@ -2,15 +2,22 @@ import React, { useState, useEffect } from 'react'
 import cx from 'classnames'
 import StudioSidebar from './Sidebar'
 import StudioMain from './Main'
-import { DEFAULT_SETTINGS, DEFAULT_OPTIONS, DEFAULT_METRICS } from './defaults'
+import {
+  DEFAULT_SETTINGS,
+  DEFAULT_OPTIONS,
+  DEFAULT_METRICS,
+  DEFAULT_METRIC_SETTINGS_MAP
+} from './defaults'
 import { MAX_METRICS_AMOUNT } from './constraints'
-import { generateShareLink, updateHistory } from './url'
+import { generateShareLink } from './url'
 import { trackMetricState } from './analytics'
 import { useTimeseries } from './timeseries/hooks'
 import { buildAnomalies } from './timeseries/anomalies'
 import { buildComparedMetric } from './Compare/utils'
 import { TOP_HOLDERS_PANE } from './Chart/Sidepane/panes'
+import { updateHistory } from '../../utils/utils'
 import { useClosestValueData } from '../Chart/hooks'
+import { getPreparedMetricSettings } from './timeseries/utils'
 import styles from './index.module.scss'
 
 const Studio = ({
@@ -21,6 +28,7 @@ const Studio = ({
   defaultEvents,
   defaultComparedMetrics,
   defaultComparables,
+  defaultMetricSettingsMap,
   topSlot,
   bottomSlot,
   ...props
@@ -32,17 +40,36 @@ const Studio = ({
   const [metrics, setMetrics] = useState(defaultMetrics)
   const [activeMetrics, setActiveMetrics] = useState(defaultMetrics)
   const [activeEvents, setActiveEvents] = useState(defaultEvents)
+  const [MetricSettingMap, setMetricSettingMap] = useState(
+    defaultMetricSettingsMap
+  )
   const [chartSidepane, setChartSidepane] = useState()
   const [advancedView, setAdvancedView] = useState()
   const [shareLink, setShareLink] = useState()
   const [isICOPriceDisabled, setIsICOPriceDisabled] = useState(true)
-  const [rawData, loadings, ErrorMsg] = useTimeseries(activeMetrics, settings)
-  const [eventsData, eventLoadings] = useTimeseries(activeEvents, settings)
+
+  const [rawData, loadings, ErrorMsg] = useTimeseries(
+    activeMetrics,
+    settings,
+    MetricSettingMap
+  )
+
   const [isSidebarClosed, setIsSidebarClosed] = useState()
+
+  const [eventsData, eventLoadings] = useTimeseries(activeEvents, settings)
   const data = useClosestValueData(
     rawData,
     activeMetrics,
     options.isClosestDataActive
+  )
+
+  useEffect(
+    () => {
+      setMetricSettingMap(
+        getPreparedMetricSettings(activeMetrics, MetricSettingMap)
+      )
+    },
+    [activeMetrics]
   )
 
   useEffect(
@@ -122,9 +149,7 @@ const Studio = ({
 
   useEffect(
     () => {
-      if (
-        chartSidepane === TOP_HOLDERS_PANE && options.isMultiChartsActive
-      ) {
+      if (chartSidepane === TOP_HOLDERS_PANE && options.isMultiChartsActive) {
         setChartSidepane()
       }
     },
@@ -140,7 +165,6 @@ const Studio = ({
     if (metricSet.has(metric)) {
       if (activeMetrics.length === 1) return
       metricSet.delete(metric)
-      trackMetricState(metric, false)
     } else {
       if (
         !options.isMultiChartsActive &&
@@ -188,6 +212,7 @@ const Studio = ({
         toggleAdvancedView={toggleAdvancedView}
         toggleChartSidepane={toggleChartSidepane}
         setIsSidebarClosed={setIsSidebarClosed}
+        setMetricSettingMap={setMetricSettingMap}
         isICOPriceDisabled={isICOPriceDisabled}
         isSidebarClosed={isSidebarClosed}
       />
@@ -239,6 +264,7 @@ export default ({
   metrics,
   events,
   comparables,
+  MetricSettingsMap,
   ...props
 }) => (
   <Studio
@@ -251,5 +277,6 @@ export default ({
     defaultMetrics={metrics || DEFAULT_METRICS}
     defaultEvents={events}
     defaultComparables={comparables}
+    defaultMetricSettingsMap={MetricSettingsMap || DEFAULT_METRIC_SETTINGS_MAP}
   />
 )

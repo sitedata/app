@@ -1,14 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import LoginDialog from './index'
-import {checkIsLoggedIn} from "../../pages/UserSelectors";
+import { checkIsLoggedIn } from '../../pages/UserSelectors'
 
-const LoginDialogWrapper = ({isLoggedIn, children, title = 'Login required'}) => {
-  if(isLoggedIn){
+const LoginDialogWrapper = ({
+  isLoggedIn,
+  title = 'Login required',
+  trigger: Trigger,
+  children
+}) => {
+  if (isLoggedIn) {
     return children
   }
 
-  return <LoginDialog trigger={<div>{children}</div>} title={title}/>
+  return (
+    <LoginDialog
+      trigger={Trigger ? <Trigger /> : <div>{children}</div>}
+      title={title}
+    />
+  )
 }
 
 const mapStateToProps = state => {

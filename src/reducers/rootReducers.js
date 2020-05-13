@@ -9,9 +9,6 @@ import signals, {
   initialState as signalsState
 } from '../ducks/Signals/common/reducers'
 import rootUi, { initialState as rootUiState } from './root-ui'
-import detailedPageUi, {
-  initialState as detailedPageUiState
-} from './detailed-page-ui'
 import insightsPageUi, {
   initialState as insightsPageUiState
 } from './insights-page-ui'
@@ -24,9 +21,6 @@ import watchlistUi, {
 import hypedTrends, {
   initialState as initialHypedTrends
 } from './../components/Trends/reducers'
-import socialVolume, {
-  initialState as initialSocialVolume
-} from './../components/SocialVolumeWidget/reducers'
 import accountUi, {
   initialState as initialAccountUiState
 } from '../pages/Account/reducers'
@@ -41,13 +35,11 @@ export const intitialState = {
   hypedTrends: initialHypedTrends,
   timeseries: timeseriesState,
   signals: signalsState,
-  detailedPageUi: detailedPageUiState,
   insightsPageUi: insightsPageUiState,
   watchlistUi: initialWatchlistUiState,
   rootUi: rootUiState,
   notification: initialNotificationState,
   router: routerReducer,
-  socialVolume: initialSocialVolume,
   accountUi: initialAccountUiState,
   recents: initialRecents,
   marketSegments: initialMarketSegments
@@ -60,11 +52,9 @@ export default combineReducers({
   timeseries,
   signals,
   rootUi,
-  detailedPageUi,
   insightsPageUi,
   watchlistUi,
   notification,
-  socialVolume,
   accountUi,
   recents,
   marketSegments

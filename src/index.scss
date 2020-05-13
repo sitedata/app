@@ -1,8 +1,6 @@
-@import 'variables.scss';
 @import '~@santiment-network/ui/main';
 @import '~@santiment-network/ui/mixins';
 @import '~insights-app/lib/ui/index.scss';
-@import 'mixins.scss';
 
 :global(#root) {
   @include responsive('phone', 'phone-xs') {
@@ -49,6 +47,7 @@ body {
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 a {
@@ -132,15 +131,9 @@ hr {
   display: none;
 }
 
-#intercom-container,
-.intercom-namespace {
-  display: none;
-}
-
-@media (min-width: $breakpoint-desktop) {
-  #intercom-container,
-  .intercom-namespace {
-    display: block;
+.intercom-launcher {
+  @include responsive('phone', 'phone-xs') {
+    display: none;
   }
 }
 

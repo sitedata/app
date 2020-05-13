@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import {connect} from "react-redux";
+import { connect } from 'react-redux'
 import MetricButton from './MetricButton'
 import { NO_GROUP } from '../utils'
 import { Metric } from '../../../dataHub/metrics'
@@ -19,9 +19,9 @@ const Group = ({
   options,
   Submetrics,
   isICOPriceDisabled,
-  isBeta
+  isBeta,
+  setMetricSettingMap
 }) => {
-
   return (
     <>
       {title !== NO_GROUP && <h4 className={styles.group}>{title}</h4>}
@@ -30,8 +30,8 @@ const Group = ({
           return null
         }
 
-        if(metric.isBeta && !isBeta){
-          return null;
+        if (metric.isBeta && !isBeta) {
+          return null
         }
 
         const submetrics = Submetrics[metric.key]
@@ -44,6 +44,7 @@ const Group = ({
               isError={ErrorMsg[metric.key]}
               isActive={actives.includes(metric)}
               onClick={() => toggleMetric(metric)}
+              setMetricSettingMap={setMetricSettingMap}
             />
             {/* TODO: refactor 'ICO Price', 'advancedView' to be a submetric array [@vanguard | March 10, 2020] */}
             {isICOPriceDisabled ||

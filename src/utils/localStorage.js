@@ -65,14 +65,16 @@ export const hardReloadTabs = () => {
   window.location.reload(true)
 }
 
-window.addEventListener('storage', evt => {
+window.addEventListener('storage', ({ key, oldValue, newValue }) => {
   if (
-    evt.key === 'user' &&
-    evt.oldValue.includes('"token":null') &&
-    evt.newValue.includes('"token":"')
+    key === 'user' &&
+    oldValue &&
+    newValue &&
+    oldValue.includes('"token":null') &&
+    newValue.includes('"token":"')
   ) {
     window.location.reload()
-  } else if (evt.key === 'reload' && evt.oldValue !== evt.newValue) {
+  } else if (key === 'reload' && oldValue !== newValue) {
     window.location.reload(true)
   }
 })
@@ -82,7 +84,8 @@ export const getSavedToggle = (key, defaultValue = false) => {
   return saved === null ? defaultValue : !!saved
 }
 
-export const getSavedMulticharts = () => getSavedToggle('isMultiChartsActive', true)
+export const getSavedMulticharts = () =>
+  getSavedToggle('isMultiChartsActive', true)
 
 export const saveToggle = (key, value) =>
   localStorage.setItem(key, value ? '+' : '') || value

@@ -7,6 +7,7 @@ import AverageSocialVolume from '../../components/AverageSocialVolume'
 import HelpPopup from '../../components/HelpPopup/HelpPopup'
 import Footer from '../../components/Footer'
 import styles from './Sidebar.module.scss'
+import stylesTooltip from '../../components/HelpPopup/HelpPopup.module.scss'
 
 const MAX_DATE = new Date()
 
@@ -23,7 +24,13 @@ function getTimePeriod (date) {
   }
 }
 
-const Sidebar = ({ topic, isDesktop, ...props }) => {
+const Sidebar = ({
+  topics,
+  linkedAssets,
+  isDesktop,
+  isEmptySearch,
+  ...props
+}) => {
   const asideRef = useRef(null)
   const [trendDate, setTrendDate] = useState([MAX_DATE])
   const [trendPeriod, setTrendPeriod] = useState(getTimePeriod(MAX_DATE))
@@ -59,14 +66,18 @@ const Sidebar = ({ topic, isDesktop, ...props }) => {
 
   return (
     <aside className={styles.sidebar} ref={asideRef}>
-      {topic && (
+      {!isEmptySearch && (
         <>
-          <AverageSocialVolume {...props} text={topic} />
+          <AverageSocialVolume
+            {...props}
+            topics={topics}
+            linkedAssets={linkedAssets}
+          />
           <WordCloud
             hideWord
             className={styles.cloud}
             infoClassName={styles.cloud__header}
-            word={topic}
+            word={topics[0]}
           />
         </>
       )}
@@ -74,15 +85,18 @@ const Sidebar = ({ topic, isDesktop, ...props }) => {
         <div className={styles.row}>
           <h3 className={styles.trend}>Trending words top 10</h3>
           <HelpPopup>
+            <h4 className={stylesTooltip.title}>Trending words</h4>
             Top 10 words with the highest spike in mentions on crypto social
             media for a given day.
           </HelpPopup>
-          {isDesktop && <Calendar
-            dates={trendDate}
-            onChange={onTrendCalendarChange}
-            className={styles.calendar}
-            maxDate={MAX_DATE}
-          />}
+          {isDesktop && (
+            <Calendar
+              dates={trendDate}
+              onChange={onTrendCalendarChange}
+              className={styles.calendar}
+              maxDate={MAX_DATE}
+            />
+          )}
         </div>
         <GetHypedTrends
           interval='1d'

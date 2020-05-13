@@ -13,9 +13,10 @@ export const GET_METRIC = (
     $to: DateTime!
     $interval: interval
     $transform: TimeseriesMetricTransformInputObject
+    $holdersCount: Int
   ) {
     getMetric(metric: "${queryKey}") {
-      timeseriesData(selector: { ${selector}: $slug}, from: $from, to: $to, interval: $interval, transform: $transform) {
+      timeseriesData(selector: { ${selector}: $slug, holdersCount: $holdersCount}, from: $from, to: $to, interval: $interval, transform: $transform) {
         datetime
         ${key}: value
       }
