@@ -32,7 +32,7 @@
     "copy-to-clipboard": "^3",
     "draft-convert": "^2.0.1",
     "draftjs-md-converter": "^0.1.6",
-    "formik": "^1.5.1",
+    "formik": "^2.0.0",
     "formik-effect": "^1.2.0",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
@@ -82,7 +82,7 @@
     "redux-observable": "^0.18.0",
     "redux-persist": "^5.4.0",
     "rxjs": "5.x.x",
-    "sanitize-html": "^1.18.2",
+    "sanitize-html": "^2.0.0",
     "svg-sprite": "1.5.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "validate.js": "^0.12.0"
